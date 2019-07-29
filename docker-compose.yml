@@ -1,7 +1,49 @@
 version: '3.4'
 services:
   nginx:
-    container_name: "nginx"
-    image: "nginx"
+    container_name: nginx
+    image: "nginx:latest"
     ports:
       - "8080:80"
+    volumes: 
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./out/access.log:/dev/stdout:rw
+      - ./out/error.log:/dev/strerr:rw
+
+  filebeat:
+    container_name: filebeat
+    image: "store/elastic/filebeat:7.2.0"
+    networks: 
+      - elastic
+    volumes: 
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./out/access.log:/var/log/nginx/access.log
+      - ./out/error.log:/var/log/nginx/error.log:ro
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: "elasticsearch:7.2.0"
+    volumes:
+      - elastic:/usr/share/elasticsearch/data
+    ports:
+      - "9300:9300"
+      - "9200:9200"
+    environment: 
+      - "discovery.type=single-node"
+    networks: 
+      - elastic
+      
+  kibana:
+    container_name: kibana
+    image: "kibana:7.2.0"
+    ports:
+      - "5601:5601"
+    networks: 
+      - elastic
+
+networks: 
+  elastic:
+
+volumes: 
+  elastic:
