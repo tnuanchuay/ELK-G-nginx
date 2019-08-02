@@ -37,6 +37,8 @@ services:
   kibana:
     container_name: kibana
     image: "kibana:7.2.0"
+    volumes:
+      - kibana
     ports:
       - "5601:5601"
     networks: 
@@ -46,7 +48,7 @@ services:
     container_name: logstash
     image: "logstash:7.2.0"
     volumes:
-      - ./logstash/logstash.yml:/usr/share/logstash/pipeline/logstash.yml:ro
+      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
     networks: 
       - elastic
     ports:
@@ -56,6 +58,8 @@ services:
   grafana:
     container_name: grafana
     image: "grafana/grafana"
+    volumes: 
+      - grafana
     ports:
       - "3000:3000"
     networks: 
@@ -66,3 +70,5 @@ networks:
 
 volumes: 
   elastic:
+  kibana:
+  grafana:
