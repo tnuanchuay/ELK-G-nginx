@@ -42,6 +42,17 @@ services:
     networks: 
       - elastic
 
+  logstash:
+    container_name: logstash
+    image: "logstash:7.2.0"
+    volumes:
+      - ./logstash/logstash.yml:/usr/share/logstash/pipeline/logstash.yml:ro
+    networks: 
+      - elastic
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+
   grafana:
     container_name: grafana
     image: "grafana/grafana"

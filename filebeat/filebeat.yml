@@ -15,9 +15,8 @@ processors:
      fields: ['message']
      target: nginx
 
-output.elasticsearch:
-  hosts: 'elasticsearch:9200'
-  username: ''
-  password: ''
+output.logstash:
+  hosts: ["logstash:5044"]
+
 setup.kibana:
   host: "kibana:5601"
