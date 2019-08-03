@@ -10,14 +10,9 @@ filebeat.inputs:
       - /var/log/nginx/*.log
 
 processors:
-- add_cloud_metadata: ~
-- decode_json_fields:
-     fields: ['message']
-     target: nginx
 
-output.elasticsearch:
-  hosts: 'elasticsearch:9200'
-  username: ''
-  password: ''
+output.logstash:
+  hosts: ["logstash:5044"]
+
 setup.kibana:
   host: "kibana:5601"
