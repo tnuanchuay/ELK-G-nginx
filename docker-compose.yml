@@ -15,7 +15,7 @@ services:
     container_name: filebeat
     image: "store/elastic/filebeat:7.2.0"
     networks: 
-      - elastic
+      - elk
     volumes: 
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - ./out/access.log:/var/log/nginx/access.log
@@ -32,13 +32,13 @@ services:
     environment: 
       - "discovery.type=single-node"
     networks: 
-      - elastic
+      - elk
       
   kibana:
     container_name: kibana
     image: "kibana:7.2.0"
     volumes:
-      - kibana
+      - elk
     ports:
       - "5601:5601"
     networks: 
@@ -50,7 +50,7 @@ services:
     volumes:
       - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
     networks: 
-      - elastic
+      - elk
     ports:
       - "5044:5044"
       - "9600:9600"
@@ -63,10 +63,10 @@ services:
     ports:
       - "3000:3000"
     networks: 
-      - elastic
+      - elk
 
 networks: 
-  elastic:
+  elk:
 
 volumes: 
   elastic:
